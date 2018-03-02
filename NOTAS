@@ -1,0 +1,197 @@
+TODO WebApp para bunker digital de seguimiento
+    1.- Crear evento o buscar en eventos reportados
+    2.- Indicar Datos Generales
+        - Sede
+        - Fecha
+        - Aforo
+        - Asistentes Relevantes
+        - Duración
+        - Dirección
+        - Geolocalización
+    3.- Agregar más Elementos a contabilizar
+        - Del catalogo ya establecido:
+            - Categoría, Subcategoría, Descripcion, Cantidad, Precio
+        - Abiertos - Otros servicios (RENTA DE SEDE, SERVICIO DE CAFETERIA):
+            - Categoria=SERVICIOS/ADICIONAL, Subcategoría = OTROS, Descripcion, Cantidad, Precio
+    4.- Subir evidencias: fotos y videos del evento, medios, redes sociales, oficiales o no
+        - Cada evidencia se puede poner un comentario
+    5.- Contabilizar total
+
+TODO Ligar Bunker Digital con Evento teniendo un HasOne????
+
+
+---------   OPCIONaLES ---
+TODO Que mapa se centre de acuerdo a: Staff=estado del usuario Coodinador=Circunscripcion cabezera
+TODO Tierra .- Agregar campo de equipo (General, BARDA -- Opcional Espectacular)
+    Cada uno ve información clasificada
+
+    Barda:
+        Staff: revisa complementa y manda informacion
+        Coordinador:
+            Boton para descargar imagenes.
+            Se le genera un codigo para ingresar info, cada 5
+    min checa si ya se actualizaron los campos si encuentra que ya se actualizaron despliegua boton para cerrar expediente
+
+
+
+
+-------------------- CONTENIDO DE install_mongo_driver.config ----------------------------------------------------
+commands:
+  install_mongo_driver_command:
+    command: pecl7 install mongodb
+-------------------- CONTENIDO DE set-timezone.config ----------------------------------------------------
+container_commands:
+  01changePHP:
+    command: sed -i '/PHP_DATE_TIMEZONE/ s/UTC/America\/Mexico_City/' /etc/php.d/environment.ini
+  01achangePHP:
+    command: sed -i '/aws.php_date_timezone/ s/UTC/America\/Mexico_City/' /etc/php.d/environment.ini
+  02change_AWS_PHP:
+    command: sed -i '/PHP_DATE_TIMEZONE/ s/UTC/America\/Mexico_City/' /etc/httpd/conf.d/aws_env.conf
+  03php_ini_set:
+    command: sed -i '/date.timezone/ s/UTC/America\/Mexico_City/' /etc/php.ini
+commands:
+  01remove_local:
+    command: "rm -rf /etc/localtime"
+  02link_Buenos_Aires:
+    command: "ln -s /usr/share/zoneinfo/America/Mexico_City /etc/localtime"
+  03restart_http:
+    command: sudo service httpd restart
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+STATUS:
+[ 0 Nuevo, 1 Con staff, 2 Con coordinador, 3 Aprobado, 5 Rechazado Coordinador, 9 Rechazado Staff ]
+
+    Plantilla Documento: TIERRA
+    - partido String
+    - categoria String
+    - subcategoria String
+    - cantidad Integer
+    - compartida Boolean
+    - quienes_aparecen Object
+        - presidente Boolean
+        - senador Boolean
+        - diputadoFed Boolean
+        - gobernador Boolean
+        - alcalde Boolean
+    - atributos Array
+        Object
+            - nombre String
+            - valor Double/String
+    - status Integer  (Default 0)
+    - ubicacion Object
+        - type String VALUE=Point
+        - coordinates Array
+            0 - Double (Longitud)
+            1 - Double (Latitud)
+    - direccion String
+    - circunscripcion Integer
+    - estado String
+    - estado_id String
+    - usuario Object
+        - nombre String
+        - id String
+    - fotos Array
+        - STRING (path)
+    - fecha_envio UTCDateTime
+    //Son automáticos
+    - created_at Datetime
+    - updated_at Datetime
+
+
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+
+userfisca = Base de dato con las credenciales de los usuarios, regiones y cuestiones macro, (DAFAULT)
+    Collections:
+        users = Coleccion para manejar los datos de los usuarios de la plataforma
+interfisca = Base de datos concentradora con información de las apps moviles y web service
+    Collections:
+        pubfija = Colección con reportes de publicidad en tierra
+        FIJOS:
+            1. Espectaculares: largo, alto, publicidad compartida,
+            2. Bardas
+            3. Lonas
+            4. Puentes
+            5. Pendones
+            6. Kioscos
+            7. Carteles
+            8. Parabuses
+            9. Mobiliario/Espacio Publico
+            10. Volantes y pegatinas
+            11. Valla Impresa
+            12. Valla Digital
+        Móvil:
+            1. Transporte público (Combis, micros, camiones)
+            2. Vehículos de publicidad (Tienen Pantallas o lonas a los costados)
+            3. Particulares
+            4. Taxis
+            5. Metro (Dentro de vagones)
+            6. Brigadas (Reparten utilitarios, en cruceros pueden abrir lonas)
+            8. Bicicletas/Bicitaxis/Mototaxis
+            9. Perifoneo
+
+        pubrechazada: Coleccion con los documentos rechazados definitivos (Por Staf)
+
+        eventofisca = Colección con datos de los eventos
+        status=(0 inicial, 1 ya en staff, 2 en coordinacion, 3 aprobado, 5 rechazado coordinacion, 9 rechazo staff[eliminado])
+            sede
+            aforo
+            compartido
+            quienes:
+                presidente
+                senador
+                diputadoFed
+                gobernador
+                alcalde
+            duracion
+            ubicacion   19.3028607,-99.1505277
+                type
+                coordinates
+            direccion
+            estado
+            estado_id
+            circunscripcion
+            usuario
+                id
+                nombre
+            status
+
+            precio  <- Automatico
+
+            revisado_por
+            fecha_revisado
+            aprovado_por
+            fecha_aprobado
+
+            rechazado_staff
+            fecha_rechazo_staff
+            motivo_staff
+
+            fueRechazado
+            fecha_rechazo
+            motivo
+            rechazado_por
+            bck_rechazos
+
+            estructura
+                [
+                    {
+                        subcategoria
+                        atributos
+                        cantidad
+                        precio
+                        evidencia
+                    }
+                ]
+            utilitario = Arreglo de documentos embebidos de categoria
+            transporte = Arreglo de documentos embebidos de categoria
+            produccion = Arreglo de documentos embebidos de categoria
+            animacion = Arreglo de documentos embebidos de categoria
+            espectacular = Arreglo de documentos embebidos de categoria
+
+            complemento <- Ligar documento de BunkerDigital
+
+resulfisca = Base de datos con la información revisada por el centro de control
