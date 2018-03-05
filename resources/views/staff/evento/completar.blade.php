@@ -540,8 +540,14 @@
                                             <div class="form-group">
                                                 <label for="cantidad">Cantidad</label>
                                                 <input type="number" id="cantidad" name="cantidad" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
                                                 <label for="comentario_staff">Comentario Staff</label>
-                                                <input type="text" id="comentario_staff" placeholder="Esribe tu comentario" class="form-control"/>
+                                                <input type="text" id="comentario_staff" name="comentario_staff" placeholder="Escribe aqui tu comentario" class="form-control"/>
                                             </div>
                                         </div>
                                     </div>
@@ -848,13 +854,13 @@
                 e.preventDefault();
                 $("#modalLoading").modal('show');
                 var Cantidad = $("#cantidad").val();
-                var Comentario_staff = "Hola";//$("#comentario_staff").val();
+                var comentario_staff = $("#comentario_staff").val();
                 $.post('{{route('staffEventoGuardaDetalles')}}', $("#frmDetalles").serialize())
                     .done(function(response){
                         $("#modalLoading").modal('hide');
                         $("#modalSuccess").modal('show');
                         var actualizar = $("#referencia").val().split('-');
-                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(1).text(Cantidad);
+                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(1).text(Cantidad).text(comentario_staff);
                     })
                     .fail(function(data){
                         $("#modalLoading").modal('hide');
@@ -905,7 +911,7 @@
                             tempHtml+='<input type="number" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control"/>';
                         }
                         else if(element.nombre == 'Comentario capturista'){
-                            tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control" disabled/>';
+                            tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control" readonly="readonly"/>';
                         }
                         else{
                             tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control"/>';

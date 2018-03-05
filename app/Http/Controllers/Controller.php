@@ -13,11 +13,11 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     /** CONSTANTES DE TIERRA  */
-    protected const TIERRA_CATEGORIAS = [
+     const TIERRA_CATEGORIAS = [
         'Fija',
         'Movil'
     ];
-    protected const TIERRA_SUBCATEGORIAS = [
+     const TIERRA_SUBCATEGORIAS = [
         'Fija'=>[
             'Espectaculares',
             'Bardas',
@@ -53,7 +53,7 @@ class Controller extends BaseController
             'Pantallas Moviles'
         ]
     ];
-    protected const TIERRA_FIELDS = [
+     const TIERRA_FIELDS = [
         'Fija'=>[
             'Espectaculares'=>[
                 'alto'=>'string',
@@ -219,7 +219,7 @@ class Controller extends BaseController
         ]
     ];
     /** CONSTANTES DE EVENTOS  */
-    protected const EVENTO_CATEGORIES = [
+     const EVENTO_CATEGORIES = [
         'estructura',
         'espectacular',
         'utilitario',
@@ -227,7 +227,7 @@ class Controller extends BaseController
         'animacion',
         'produccion'
     ];
-    protected const EVENTO_SUBCATEGORIES = [
+     const EVENTO_SUBCATEGORIES = [
         'estructura'=>[
             'vallas',
             'gradas',
@@ -312,7 +312,7 @@ class Controller extends BaseController
             'otros'
         ]
     ];
-    protected const EVENTO_FIELDS = [
+     const EVENTO_FIELDS = [
         'estructura'=>[
             'vallas'=>[
                 'alto'=>'string',
@@ -731,7 +731,7 @@ class Controller extends BaseController
                             'categoria'=>$categoria,
                             'subcategoria'=>$elemento['subcategoria'],
                             'cantidad'=>(array_key_exists('cantidad', $elemento) && isset($elemento['cantidad']))?$elemento['cantidad']:0,
-                            'comentario_staff'=> (array_key_exists('comentario_staff', $elemento) && isset($elemento['comentario_staff']))?$elemento['comentario_staff']:"",
+                            'comentario_staff'=>(array_key_exists('comentario_staff', $elemento) && isset($elemento['comentario_staff']))?$elemento['comentario_staff']:"",
                             'atributos'=>(array_key_exists('atributos', $elemento) &&isset($elemento['atributos']))?$elemento['atributos']:array(),
                             'evidencia'=>$fotos,
                             'precio'=>(array_key_exists('precio', $elemento) &&isset($elemento['precio']))?$elemento['precio']:0

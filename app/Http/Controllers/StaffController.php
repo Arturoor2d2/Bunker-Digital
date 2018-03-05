@@ -834,7 +834,7 @@ class StaffController extends Controller
 
                 $elemento = $evento->$categoria[$numero];
                 $elemento['cantidad'] = $request->input('cantidad', 1);
-                $elemento['comentario_staff'] = $request->input('comentario_staff', 1);
+                $elemento['comentario_staff'] = $request->input('comentario_staff', "");
                 $atributos = $elemento['atributos'];
                 $temporal = array();
 
@@ -844,9 +844,9 @@ class StaffController extends Controller
                     $valor = $request->input($attTemp, null);
                     if ( is_string($valor) && ( strtolower($valor)=='true' || strtolower($valor)=='false' ) )
                         $att['valor'] = (bool) $valor;
-                    elseif ( is_string($valor) && strtolower($valor) == 'si' )
+                    elseif ( is_string($valor) && (strtolower($valor) == 'si' || strtolower($valor) == 'Si' || strtolower($valor) == 'SI' ) )
                         $att['valor'] = true;
-                    elseif ( is_string($valor) && strtolower($valor) == 'no' )
+                    elseif ( is_string($valor) && (strtolower($valor) == 'no' || strtolower($valor) == 'No' || strtolower($valor) == 'NO' ) )
                         $att['valor'] = false;
                     elseif ( is_bool($valor) )
                         $att['valor'] = (bool) $valor;
