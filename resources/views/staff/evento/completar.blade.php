@@ -538,19 +538,20 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <label for="cantidad">Cantidad</label>
-                                                <input type="number" id="cantidad" name="cantidad" class="form-control"/>
+                                                <label for="comentario_staff">Comentario Staff</label>
+                                                <input type="text" id="comentario_staff" name="comentario_staff" placeholder="Escribe aqui tu comentario" class="form-control"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <label for="comentario_staff">Comentario Staff</label>
-                                                <input type="text" id="comentario_staff" name="comentario_staff" placeholder="Escribe aqui tu comentario" class="form-control"/>
+                                                <label for="cantidad">Cantidad</label>
+                                                <input type="number" id="cantidad" name="cantidad" class="form-control"/>
                                             </div>
                                         </div>
                                     </div>
+
                                     <hr/>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -860,7 +861,7 @@
                         $("#modalLoading").modal('hide');
                         $("#modalSuccess").modal('show');
                         var actualizar = $("#referencia").val().split('-');
-                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(1).text(Cantidad).text(comentario_staff);
+                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(1).text(Cantidad);
                     })
                     .fail(function(data){
                         $("#modalLoading").modal('hide');
@@ -910,7 +911,7 @@
                         {
                             tempHtml+='<input type="number" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control"/>';
                         }
-                        else if(element.nombre == 'Comentario capturista'){
+                        else if(element.nombre == 'Comentario capturista' || element.nombre == 'comentario capturista'){
                             tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control" readonly="readonly"/>';
                         }
                         else{

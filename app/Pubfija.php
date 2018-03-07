@@ -11,7 +11,7 @@ class Pubfija extends Model
     /**
      * @var string Conexion a la base de datos objetivo
      */
-    protected $connection = 'mongores';
+    protected $connection = 'mongoint';
     /**
      * @var string Conexion a la coleccion que contiene los datos
      */

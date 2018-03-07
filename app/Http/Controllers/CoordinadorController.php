@@ -264,7 +264,7 @@ class CoordinadorController extends Controller
      */
     public function eventoIndex(){
 
-        $eventos = Evento::project([
+        $eventos = Resevento::project([
             'id'=>1,
             'alianza'=>1,
             'partido'=>1,
@@ -274,7 +274,6 @@ class CoordinadorController extends Controller
             'fecha'=>1
         ])
             ->where('circunscripcion', Auth::user()->circunscripcion)
-            ->where('status', 2)
             ->get();
 
         return view('coordinador.evento.index')
@@ -290,7 +289,7 @@ class CoordinadorController extends Controller
     public function eventoDetalle(Request $request, string $id){
 
         try{
-            $evento = Evento::findOrFail($id);
+            $evento = Resevento::findOrFail($id);
             $staff = User::findOrFail($evento->revisor);
 
             //Parsear los datos para adjuntar categoria y url validas al storage
@@ -336,7 +335,7 @@ class CoordinadorController extends Controller
             list($categoria, $numero) = explode('-',$id);
 
             try{
-                $evento = Evento::project([
+                $evento = Resevento::project([
                     'id'=>1,
                     $categoria=>1
                 ])
@@ -475,54 +474,42 @@ class CoordinadorController extends Controller
     {
         if($request->isMethod('post'))
         {
-            $descripcion = $request->input('adicionalDesc', null);
-            $cantidad = $request->input('adicionalCantidad', 0);
-            $precio = $request->input('adicionalPrecio', 0);
-            if( is_numeric($cantidad) && is_numeric($precio) && !empty($descripcion) )
+            $fuente = $request->input('adicionalFuente', null);
+            $link = $request->input('adicionalLink', 0);
+            $descripcion= $request->input('adicionalDescripcion', 0);
+            $medio = $request->input('adicionalMedio', 0);
+
+            if( !empty($descripcion) && !empty($fuente) && !empty($link)  )
             {
                 $nuevoElemento = [
-                    'subcategoria'=>"OTROS SERVICIOS",
-                    'cantidad'=>(int)$cantidad,
-                    'atributos'=>[
-                        array('nombre'=>'descripcion', 'valor'=>$descripcion)
-                    ],
-                    'precio'=>(double)$precio
+                    'subcategoria'=>"complemento",
+                    'fuente'=>$fuente,
+                    'link'=>$link,
+                    'descripcion'=>$descripcion,
+                    'medio'=>$medio,
+                    'evidencia'=>[]
                 ];
                 try{
-                    $evento = Evento::project([
+                    $evento = Resevento::project([
                         'id'=>1,
-                        'precio'=>1,
-                        'adicionales'=>1
+                        'complemento_digital'=>1
                     ])->findOrFail($request->input('evento_id', null));
 
-                    if(isset($evento->adicionales))
+                    if(isset($evento->complemento_digital))
                     {
                         $elementos = array($nuevoElemento);
-                        foreach($evento->adicionales as $item)
+                        foreach($evento->complemento_digital as $item)
                             array_push($elementos, $item);
-                        $evento->adicionales = $elementos;
+                        $evento->complemento_digital = $elementos;
                     }else{
-                        $evento->adicionales = array( $nuevoElemento );
+                        $evento->complemento_digital = array( $nuevoElemento );
                     }
 
                     if($evento->save())
                     {
-                        $preciototal = $this->obtenerValorEvento($evento->id);
-                        if(is_numeric($preciototal))
-                        {
-                            $evento->precio = $preciototal;
-                        }else{
-                            $evento->precio += $precio;
-                        }
-                        if($evento->save()){
-                            return redirect()->route('coordinadorEventoDetalles', [
-                                'id'=>$evento->id
-                            ]);
-                        }else{
-                            return view('shared.complete.404')
-                                ->with('mensaje', 'Precio del evento no actualizado');
-                        }
-
+                        return redirect()->route('coordinadorEventoDetalles', [
+                            'id'=>$evento->id
+                        ]);
                     }else{
                         return view('shared.complete.404')
                             ->with('mensaje', 'Evento no actualizado');

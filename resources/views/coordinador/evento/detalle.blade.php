@@ -94,14 +94,12 @@
                                     <label for="precioSede">Costo de la Sede</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">$</div>
-                                        <input type="text" class="form-control" name="precioSede" id="precioSede" placeholder="Costo de la Sede"
+                                        <input type="text" class="form-control" name="precioSede" id="precioSede" placeholder="Costo de la Sede" readonly
                                                value="{{$evento->precioSede}}">
                                         <div class="input-group-addon">MXN</div>
                                     </div>
                                 </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="evento" value="{{$evento->id}}"/>
-                                <button type="submit" class="btn btn-primary btn-sm pull-right">Guardar precio sede</button>
+
                             </form>
                         </div>
                     </div>
@@ -505,7 +503,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="cantidad">Cantidad</label>
-                                                <input type="number" id="cantidad" name="cantidad" class="form-control"/>
+                                                <input type="number" id="cantidad" name="cantidad" class="form-control" readonly="readonly"/>
                                             </div>
                                             <div class="form-group">
                                                 <label for="comentario_staff">Comentario Staff</label>
@@ -516,7 +514,7 @@
                                                 <div class="col-sm-10">
                                                     <div class="input-group">
                                                         <div class="input-group-addon">$</div>
-                                                        <input type="text" id="precio" name="precio" class="form-control" value="0"/>
+                                                        <input type="text" id="precio" name="precio" class="form-control" value="0" readonly="readonly"/>
                                                         <div class="input-group-addon"> MXN</div>
                                                     </div>
                                                 </div>
@@ -539,13 +537,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-footer">
-                                <div id="detallesEnviar" class="text-right">
-                                    <button id="enviarDetalles"
-                                            class="btn btn-success">
-                                        <i class="fa fa-save fa-2x pull-left"></i>Guardar datos de reporte</button>
-                                </div>
-                            </div>
+
                         </div>
                     </form>
                 </div>
@@ -699,12 +691,48 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-10 col-md-offset-1">
                                 <div class="form-group">
-                                    <label for="adicionalDesc">Descripción</label>
-                                    <input type="text" name="adicionalDesc" class="form-control"
-                                    placeholder="Ej. Servicios de cafetería, Buffet, etc."/>
+                                    <label for="adicionalFuente">Fuente</label>
+                                    <input type="text" name="adicionalFuente" class="form-control"/>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                <div class="form-group">
+                                    <label for="adicionalLink">Link</label>
+                                    <input type="text" name="adicionalLink" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                <div class="form-group">
+                                    <label for="adicionalDescripcion">Descripcion</label>
+                                    <input type="text" name="adicionalDescripcion" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                <div class="form-group">
+                                    <label for="adicionalMedio">Tipo de Medio</label>
+                                    <select class="form-control">
+                                        <option value="Nacional">Nacional</option>
+                                        <option value="Nacional">Local</option>
+                                        <option value="Redes">Redes Sociales</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                <div class="form-group">
+                                    <label for="adicionalFuente">Fotos</label>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
                         <div class="row">
                             <div class="col-sm-12 col-md-10 col-md-offset-1">
                                 <div class="form-group">
@@ -713,19 +741,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-10 col-md-offset-1">
-                                <div class="form-group">
-                                    <label for="adicionalPrecio">Precio</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">$</div>
-                                        <input type="text" class="form-control" name="adicionalPrecio" id="adicionalPrecio"
-                                               placeholder="0.00" />
-                                        <div class="input-group-addon">MXN</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -865,10 +881,11 @@
                 $.post('{{route('coordinadorEventoGuardaDetalles')}}', $("#frmDetalles").serialize())
                     .done(function(response){
                         var actualizar = $("#referencia").val().split('-');
+                        var Cantidad = $("#cantidad").val();
                         var precio = accounting.formatMoney($("#precio").val());
                         $("#modalLoading").modal('hide');
                         $("#modalSuccess").modal('show');
-                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(2).text(precio);
+                        $("#"+actualizar[0]+" table tbody").children().eq(actualizar[1]).children().eq(1).text(Cantidad).children().eq(2).text(precio);
                         $("#total").text(accounting.formatMoney(response.data.precio));
                         $("#datosPanel").hide();
                         $("#referencia").val('');
@@ -899,6 +916,8 @@
                     var tempNombre = element.nombre.split(' ').join('');
                     var tempHtml = '<div class="form-group">' +
                         '<label for="'+element.nombre+'">'+ucfirst(element.nombre)+'</label>';
+                    tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control" readonly="readonly"/>';
+                    /*
                     if( typeof element.valor == 'boolean')
                     {
                         tempHtml+='<select name="'+tempNombre+'" id="'+tempNombre+'" class="form-control">';
@@ -910,13 +929,13 @@
                     }else{
                         if(typeof element.valor == 'number')
                         {
-                            tempHtml+='<input type="number" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control"/>';
+                            tempHtml+='<input type="number" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control readonly="readonly"/>';
                         }else if(element.nombre == 'Comentario capturista' || element.nombre == 'comentario capturista'){
                             tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control" readonly="readonly"/>';
                         } else{
-                            tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control"/>';
+                            tempHtml+='<input type="text" id="'+tempNombre+'" name="'+tempNombre+'" value="'+element.valor+'" class="form-control readonly="readonly"/>';
                         }
-                    }
+                    }*/
                     tempHtml+='</div>';
                     $("#detalleAtributos").append(tempHtml);
                 });
