@@ -366,6 +366,31 @@ class CoordinadorController extends Controller
     }
 
     /**
+     * Funcion del bunker para crear un nuevo evento
+     */
+    public function  eventoNuevo(Request $request){
+        try{/*
+            $evento = Resevento::findOrFail($id);
+            $staff = User::findOrFail($evento->revisor);
+
+            //Parsear los datos para adjuntar categoria y url validas al storage
+            $dataEstructura = $this->parseaElementosFoto($evento->estructura, 'estructura', false);
+            $dataEspectacular = $this->parseaElementosFoto($evento->espectacular, 'espectacular', false);
+            $dataUtilitario = $this->parseaElementosFoto($evento->utilitario, 'utilitario', false);
+            $dataTransporte = $this->parseaElementosFoto($evento->transporte, 'transporte', false);
+            $dataProduccion = $this->parseaElementosFoto($evento->produccion, 'produccion', false);
+            $dataAnimacion = $this->parseaElementosFoto($evento->animacion, 'animacion', false);
+            $dataAdicionales = $this->parseaElementosFoto($evento->adicionales, 'adicionales', false);
+*/
+            return view('coordinador.evento.digital');
+
+        }catch(ModelNotFoundException $e)
+        {
+            return view('shared.complete.404')
+                ->with('mensaje', 'No se localizó el evento '.$e->getMessage());
+        }
+    }
+    /**
      * Funcion para cargar los datos al reporte del detalle del evento seleccionado
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -474,10 +499,10 @@ class CoordinadorController extends Controller
     {
         if($request->isMethod('post'))
         {
-            $fuente = $request->input('adicionalFuente', null);
-            $link = $request->input('adicionalLink', 0);
-            $descripcion= $request->input('adicionalDescripcion', 0);
-            $medio = $request->input('adicionalMedio', 0);
+            $fuente = $request->input('adicionalFuente', "");
+            $link = $request->input('adicionalLink', "");
+            $descripcion= $request->input('adicionalDescripcion', "");
+            $medio = $request->input('adicionalMedio', "");
 
             if( !empty($descripcion) && !empty($fuente) && !empty($link)  )
             {

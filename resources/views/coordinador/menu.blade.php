@@ -4,7 +4,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">CREAR EVENTO</div>
             <div class="panel-body text-center">
-                <a class="btn btn-lg btn-primary" href="{{ route('coordinadorEventoIndex') }}">
+                <a class="btn btn-lg btn-primary" href="{{ route('coordinadorNuevoEvento') }}">
                     <i class="fa fa-street-view fa-3x pull-left"></i> Crear
                 </a>
             </div>

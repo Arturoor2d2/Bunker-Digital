@@ -100,6 +100,8 @@ Route::prefix('coordinador')->middleware(['auth'])->group(function(){
         Route::get('/', 'CoordinadorController@eventoIndex')->name('coordinadorEventoIndex');
         //Muestra el detalle del evento
         Route::get('detalle/{id}', 'CoordinadorController@eventoDetalle')->name('coordinadorEventoDetalles');
+        //Nuevo Evento
+        Route::get('nuevo', 'CoordinadorController@eventoNuevo')->name('coordinadorNuevoEvento');
         //Muestra los datos de un reporte
         Route::get('datosCategoria', 'CoordinadorController@eventoDetalleCategoria')->name('coordinadorEventoDetalleCategoria');
         //Guarda la informacion de un reporte

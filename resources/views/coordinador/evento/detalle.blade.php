@@ -715,8 +715,8 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-10 col-md-offset-1">
                                 <div class="form-group">
-                                    <label for="adicionalMedio">Tipo de Medio</label>
-                                    <select class="form-control">
+                                    <label >Tipo de Medio</label>
+                                    <select class="form-control" for="adicionalMedio" name="adicionalMedio" id="adicionalMedio">
                                         <option value="Nacional">Nacional</option>
                                         <option value="Nacional">Local</option>
                                         <option value="Redes">Redes Sociales</option>
